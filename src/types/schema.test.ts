@@ -187,7 +187,7 @@ describe("schema parsing tests", () => {
                   "date": "2021-01-01",
                   "endDate": null,
                   "title": "Test",
-                  "type": "single",
+                  "type": "",
                 }
             `);
         });

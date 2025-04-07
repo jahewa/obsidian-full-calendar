@@ -116,12 +116,14 @@ interface CalendarSettingsProps {
     setting: Partial<CalendarInfo>;
     onColorChange: (s: string) => void;
     deleteCalendar: () => void;
+    pushCalendarUp: () => void;
 }
 
 export const CalendarSettingRow = ({
     setting,
     onColorChange,
     deleteCalendar,
+    pushCalendarUp,
 }: CalendarSettingsProps) => {
     const isCalDAV = setting.type === "caldav";
     return (
@@ -133,7 +135,16 @@ export const CalendarSettingRow = ({
             >
                 ✕
             </button>
-            {setting.type === "local" ? (
+
+            <button
+                type="button"
+                onClick={pushCalendarUp} //MARKED calendar settings to change order
+                style={{ maxWidth: "15%" }}
+            >
+                up
+            </button>
+
+            {setting.type === "local" ? ( 
                 <DirectorySetting source={setting} />
             ) : setting.type === "dailynote" ? (
                 <HeadingSetting source={setting} />
@@ -202,10 +213,24 @@ export class CalendarSettings extends React.Component<
                                 dirty: true,
                             }))
                         }
+
+                        pushCalendarUp={() =>
+                            idx>0&&
+                            this.setState((state, props) => ({
+                                sources: [ //MARKED, here the json is preparedto be edited
+                                    ...state.sources.slice(0, idx-1),
+                                    ...state.sources.slice(idx, idx+1),
+                                    ...state.sources.slice(idx-1, idx),
+                                    ...state.sources.slice(idx+1),
+                                ],
+                                dirty: true, //dirty marks, if a save is outstanding
+                            }))
+                        }
+
                     />
                 ))}
                 <div className="setting-item-control">
-                    {this.state.dirty && (
+                    {this.state.dirty && ( //MARKED This is the submit / save control
                         <button
                             onClick={() => {
                                 if (

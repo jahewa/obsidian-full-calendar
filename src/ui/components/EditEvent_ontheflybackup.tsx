@@ -276,6 +276,7 @@ export const EditEvent = ({
             <form onSubmit={handleSubmit}>
                 <p>
                     <fieldset>
+                        <legend>Select a type</legend>
                             <input type="radio" id="single" name="type" value="single"
                             checked={!isTask && !isRrule} 
                             onChange={(e) => {
@@ -305,8 +306,6 @@ export const EditEvent = ({
                             <label for="rrule">Recurring</label>
                      </fieldset>
                 </p>
-
-                <hr></hr>
 
                 <p>
                     <input
@@ -562,7 +561,7 @@ export const EditEvent = ({
                         />
                     </p>
                     
-                    {open&&initialEvent?.type=="rrule"&&(
+                    {open&&(
                         <p>
                             <button type="button"
                             onClick={(e)=> {
@@ -570,12 +569,6 @@ export const EditEvent = ({
                                 setRruleSkipDays((openedAt + comma + r_skipDays?.toString()).split(","));                              
                             }}
                             >Skip this occurance</button>
-                            <label> </label>
-                            <button type="button"
-                            onClick={(e)=> {
-                                setRruleSkipDays([]);
-                            }}
-                            >Reset skips</button>
                             <label> </label>
                             <input
                                 type="text"
@@ -585,6 +578,13 @@ export const EditEvent = ({
                                     setRruleSkipDays(e.target.value.split(","));
                                 }}
                             />
+                            <label> </label>
+                            <button type="button"
+                            onClick={(e)=> {
+                                setRruleSkipDays([]);
+                            }}
+                            >Reset skips</button>
+
                         </p>
                     )}
                 </>
@@ -592,8 +592,7 @@ export const EditEvent = ({
                 )}
                 
 
-                <hr></hr>
-
+            
                 <p
                     style={{
                         display: "flex",
@@ -603,7 +602,9 @@ export const EditEvent = ({
                 >
                     <button type="submit"> Save Event </button>
 
-                {open&&isRrule&&initialEvent?.type=="rrule"&&(
+                {open&&isRrule&&(
+                    <>
+                    <label> </label>
                     <button type="button"
                             onClick={(e) =>{
                                 var comma = r_skipDays.length === 0 ? "" : ",";
@@ -636,6 +637,7 @@ export const EditEvent = ({
                                 );
                             }}
                             >Separate this occurance</button>
+                        </>
                         )}
 
                     

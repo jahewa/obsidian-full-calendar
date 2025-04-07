@@ -20,7 +20,8 @@ export async function openFileForEvent(
     const {
         location: { path, lineNumber },
     } = details;
-    let leaf = workspace.getMostRecentLeaf();
+    //let leaf = workspace.getMostRecentLeaf();
+    let leaf = workspace.getLeaf(false);//MARKED
     const file = vault.getAbstractFileByPath(path);
     if (!(file instanceof TFile)) {
         return;

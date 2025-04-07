@@ -35,7 +35,7 @@ export const DEFAULT_SETTINGS: FullCalendarSettings = {
     firstDay: 0,
     initialView: {
         desktop: "timeGridWeek",
-        mobile: "timeGrid3Days",
+        mobile: "timeGridWeek",
     },
     timeFormat24h: false,
     clickToCreateEventFromMonthView: true,
@@ -53,14 +53,17 @@ const WEEKDAYS = [
 
 const INITIAL_VIEW_OPTIONS = {
     DESKTOP: {
-        timeGridDay: "Day",
-        timeGridWeek: "Week",
         dayGridMonth: "Month",
+        timeGridWeek: "Week",
+        timeGrid3Days: "3 Days",
+        timeGrid1Day: "Day",
         listWeek: "List",
     },
     MOBILE: {
+        dayGridMonth: "Month",
+        timeGridWeek: "Week",
         timeGrid3Days: "3 Days",
-        timeGridDay: "Day",
+        timeGrid1Day: "Day",
         listWeek: "List",
     },
 };

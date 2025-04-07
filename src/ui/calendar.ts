@@ -104,7 +104,7 @@ export function renderCalendar(
         googleCalendarApiKey: "AIzaSyDIiklFwJXaLWuT_4y6I9ZRVVsPuf4xGrk",
         initialView:
             settings?.initialView?.[isNarrow ? "mobile" : "desktop"] ||
-            (isNarrow ? "timeGrid3Days" : "timeGridWeek"),
+            "timeGridWeek",
         nowIndicator: true,
         scrollTimeReset: false,
         dayMaxEvents: true,
@@ -113,26 +113,29 @@ export function renderCalendar(
             ? {
                   left: "prev,next today",
                   center: "title",
-                  right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+                  right: "dayGridMonth,timeGridWeek,timeGrid3Days,listWeek",
               }
             : !isMobile
             ? {
                   right: "today,prev,next",
-                  left: "timeGrid3Days,timeGridDay,listWeek",
+                  left: "dayGridMonth,timeGridWeek,timeGrid3Days,listWeek",
               }
             : false,
         footerToolbar: isMobile
             ? {
                   right: "today,prev,next",
-                  left: "timeGrid3Days,timeGridDay,listWeek",
+                  left: "dayGridMonth,timeGridWeek,timeGrid3Days,listWeek",
               }
             : false,
 
+        //MARKED changed date format here, added this snippet
+        locale:'en-au',
+
         views: {
-            timeGridDay: {
+            timeGrid1Day: {
                 type: "timeGrid",
                 duration: { days: 1 },
-                buttonText: isNarrow ? "1" : "day",
+                buttonText: "1",
             },
             timeGrid3Days: {
                 type: "timeGrid",
@@ -219,7 +222,7 @@ export function renderCalendar(
             }
         },
 
-        longPressDelay: 250,
+        longPressDelay: 100, /*was 250*/
     });
     cal.render();
     return cal;

@@ -91,7 +91,7 @@ export function dateEndpointsToFrontmatter(
     return {
         type: "single",
         date,
-        endDate: date !== endDate ? endDate : undefined,
+        endDate: date !== endDate ? endDate : undefined, /* MARKED, can have end date */
         allDay,
         ...(allDay
             ? {}
@@ -148,7 +148,9 @@ export function toEventInput(
             return null;
         }
         // NOTE: how exdates are handled does not support events which recur more than once per day.
-        const exdate = frontmatter.skipDates
+        const exdate = 
+        
+        frontmatter.skipDates
             .map((d) => {
                 // Can't do date arithmetic because timezone might change for different exdates due to DST.
                 // RRule only has one dtstart that doesn't know about DST/timezone changes.
@@ -234,7 +236,7 @@ export function toEventInput(
 }
 
 export function fromEventApi(event: EventApi): OFCEvent {
-    const isRecurring: boolean = event.extendedProps.daysOfWeek !== undefined;
+    const isRecurring: boolean = event.extendedProps.daysOfWeek !== undefined; //MARKED
     const startDate = getDate(event.start as Date);
     const endDate = getDate(event.end as Date);
     return {

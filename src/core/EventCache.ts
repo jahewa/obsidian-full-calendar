@@ -341,7 +341,11 @@ export default class EventCache {
         const { calendar, location: oldLocation } =
             this.getInfoForEditableEvent(eventId);
         const { path, lineNumber } = oldLocation;
-        console.debug("updating event with ID", eventId);
+        console.debug("updating event with ID", eventId); //MARKED
+
+        console.debug("event is ",newEvent);
+        console.debug("path is ",path);
+        console.debug("oldLocation is ",oldLocation);
 
         await calendar.modifyEvent(
             { path, lineNumber },

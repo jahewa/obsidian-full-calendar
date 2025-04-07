@@ -170,6 +170,7 @@ export default class FullNoteCalendar extends EditableCalendar {
 
     async getEventsInFile(file: TFile): Promise<EditableEventResponse[]> {
         const metadata = this.app.getMetadata(file);
+
         let event = validateEvent(metadata?.frontmatter);
         if (!event) {
             return [];
@@ -248,6 +249,9 @@ export default class FullNoteCalendar extends EditableCalendar {
         event: OFCEvent,
         updateCacheWithLocation: (loc: EventLocation) => void
     ): Promise<void> {
+
+        //MARKED go through this to modify event
+
         const { path } = location;
         const file = this.app.getFileByPath(path);
         if (!file) {

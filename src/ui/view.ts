@@ -14,6 +14,7 @@ import { openFileForEvent } from "./actions";
 import { launchCreateModal, launchEditModal } from "./event_modal";
 import { isTask, toggleTask, unmakeTask } from "src/ui/tasks";
 import { UpdateViewCallback } from "src/core/EventCache";
+import { string } from "zod";
 
 export const FULL_CALENDAR_VIEW_TYPE = "full-calendar-view";
 export const FULL_CALENDAR_SIDEBAR_VIEW_TYPE = "full-calendar-sidebar-view";
@@ -125,6 +126,19 @@ export class CalendarView extends ItemView {
         this.fullCalendarView = renderCalendar(calendarEl, sources, {
             forceNarrow: this.inSidebar,
             eventClick: async (info) => {
+
+                var openedAt = "";
+                var isAllDay = false;
+                if(info.el.fcSeg?.start !== undefined){
+                    isAllDay = false;
+                    openedAt = info.el.fcSeg?.start;
+                }else{
+                    isAllDay = true;
+                    openedAt = info.el.fcSeg.eventRange.range.start;
+                }
+                
+                //console.debug("mouse entering details",info, openedAt); //MARKED
+
                 try {
                     if (
                         info.jsEvent.getModifierState("Control") ||
@@ -136,7 +150,7 @@ export class CalendarView extends ItemView {
                             info.event.id
                         );
                     } else {
-                        launchEditModal(this.plugin, info.event.id);
+                        launchEditModal(this.plugin, info.event.id, String(openedAt),isAllDay);
                     }
                 } catch (e) {
                     if (e instanceof Error) {
@@ -154,9 +168,23 @@ export class CalendarView extends ItemView {
                     // The fix is just to subtract 1 from the end date before processing.
                     end.setDate(end.getDate() - 1);
                 }
+
+                /*MARKED added code to make events by default 1h, but only if they are 30min long to begin with*/
+                //console.log("float time between: ",end.getTime() - start.getTime())
+                if(end.getTime() - start.getTime() === 1000*60*30){
+                    if(start.getMinutes() === 0){
+                        end.setHours(end.getHours()+1);
+                        end.setMinutes(0);
+                    }
+                    if(start.getMinutes() === 30){
+                        end.setHours(end.getHours());
+                        end.setMinutes(30);
+                    }
+                }
+
                 const partialEvent = dateEndpointsToFrontmatter(
                     start,
-                    end,
+                    end, 
                     allDay
                 );
                 try {
@@ -164,9 +192,9 @@ export class CalendarView extends ItemView {
                         this.plugin.settings.clickToCreateEventFromMonthView ||
                         viewType !== "dayGridMonth"
                     ) {
-                        launchCreateModal(this.plugin, partialEvent);
+                        launchCreateModal(this.plugin, partialEvent); /*MARKED*/ 
                     } else {
-                        this.fullCalendarView?.changeView("timeGridDay");
+                        this.fullCalendarView?.changeView("timeGrid1Day");
                         this.fullCalendarView?.gotoDate(start);
                     }
                 } catch (e) {
@@ -177,7 +205,14 @@ export class CalendarView extends ItemView {
                 }
             },
             modifyEvent: async (newEvent, oldEvent) => {
-                try {
+                try { 
+                    //MARKED
+                    if(this.plugin.cache.getEventById(oldEvent.id)?.type === "rrule"){
+                    console.debug("stopped modification of rrule from view",this.plugin.cache.getEventById(oldEvent.id));
+                    new Notice("Please use edit modal to modify recurring event");
+                    return false;
+                    }
+
                     const didModify = await this.plugin.cache.updateEventWithId(
                         oldEvent.id,
                         fromEventApi(newEvent)

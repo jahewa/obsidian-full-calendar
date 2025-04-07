@@ -67,7 +67,7 @@ export const EventSchema = z.discriminatedUnion("type", [
     z.object({
         type: z.literal("single"),
         date: ParsedDate,
-        endDate: ParsedDate.nullable().default(null),
+        endDate: ParsedDate.nullable().default(null), /*MARKED THIS IS THE EndDate*/
         completed: ParsedDate.or(z.literal(false))
             .or(z.literal(null))
             .optional(),
@@ -76,10 +76,10 @@ export const EventSchema = z.discriminatedUnion("type", [
         type: z.literal("recurring"),
         daysOfWeek: z.array(z.enum(["U", "M", "T", "W", "R", "F", "S"])),
         startRecur: ParsedDate.optional(),
-        endRecur: ParsedDate.optional(),
+        endRecur: ParsedDate.optional(), /*MARKED THIS IS THE EndRecur date*/
     }),
     z.object({
-        type: z.literal("rrule"),
+        type: z.literal("rrule"), /*MARKED an event can be rrule*/
         startDate: ParsedDate,
         rrule: z.string(),
         skipDates: z.array(ParsedDate),
@@ -93,10 +93,25 @@ type CommonType = z.infer<typeof CommonSchema>;
 export type OFCEvent = CommonType & TimeType & EventType;
 
 export function parseEvent(obj: unknown): OFCEvent {
+
     if (typeof obj !== "object") {
         throw new Error("value for parsing was not an object.");
     }
-    const objectWithDefaults = { type: "single", allDay: false, ...obj };
+
+    const objectWithDefaults = { type: "single", allDay: false, 
+        skipDates: [],
+        ...obj };
+
+    /*
+    console.log("Parsed: ",obj, 
+        {
+            ...CommonSchema.parse(objectWithDefaults),
+            ...TimeSchema.parse(objectWithDefaults),
+            ...EventSchema.parse(objectWithDefaults),
+        }
+    );
+    */
+
     return {
         ...CommonSchema.parse(objectWithDefaults),
         ...TimeSchema.parse(objectWithDefaults),
@@ -105,6 +120,7 @@ export function parseEvent(obj: unknown): OFCEvent {
 }
 
 export function validateEvent(obj: unknown): OFCEvent | null {
+
     try {
         return parseEvent(obj);
     } catch (e) {

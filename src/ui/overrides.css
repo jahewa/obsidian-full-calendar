@@ -80,3 +80,117 @@
 	border-color: black !important;
 	border-width: 1px !important;
 }
+
+/*JHW added css*/
+
+
+.fc-event-title{
+    font-weight:500;
+}
+
+
+.fc-event-time{
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 5ch;
+}
+
+.ofc-has-checkbox{
+    max-width:8.5ch!important;
+}
+
+.fc-col-header-cell-cushion, .fc-timegrid-slot-label-cushion, .fc-timegrid-axis-cushion, .fc-toolbar-title{
+    color:var(--tab-text-color)!important;
+}
+
+
+.calEditModal label:hover{
+    color:var(--link-color)!important;
+}
+
+.calEditModal input[type="radio"], input[type="radio"]:checked+label{
+    color:var(--link-color);
+    accent-color:var(--link-color);
+}
+
+.calEditModal .dayButtons button[value="true"]{
+    background-color: var(--link-color);
+    color:var(--background-primary);
+}
+
+
+.calEditModal .dateSelectors input{
+    border:0px;
+    margin-right: 2%;
+    padding:0px;
+    height:30px;
+    width:100px;
+}
+
+.calEditModal input[id="r_interval"], 
+.calEditModal input[id="r_count"]{
+    width:10%;
+}
+
+.calEditModal select[id="r_freq"] {
+    width:20%;
+}
+
+
+.calEditModal fieldset{
+    display:inline-block!important;
+    width:70%;
+    border:0px;
+    padding-left: 0px;
+    padding-right:0px;
+}
+
+.calEditModal fieldset label{
+    margin-right:10px;
+}
+
+.calEditModal input[id="title"]{
+    width:60%;
+    margin-right:2%;
+}
+
+.calEditModal select[id="calendar"]{
+    width:38%;
+}
+
+.calEditModal .dayButtons button{
+    margin-right: 0%;
+    border-radius: 0px;
+}
+
+.calEditModal input[id="rruletext"]{
+    width:100%;
+}
+
+.fc-day-today{
+    background-color: var(--background-secondary)!important;
+    box-shadow: 0px 5px 30px var(--link-color);
+}
+
+.modal {
+    height:80%!important;
+    max-height:80%;
+}
+
+.fc-media-screen{
+    height:100%!important;
+}
+
+.fc-timegrid-event-harness{
+    max-width: 80%;
+    margin-right: 5%;
+}
+
+.hover-popover .inline-title {
+    display: block;
+}
+
+.calEditModal input:disabled{
+    background-color: transparent;
+    border:0px;
+}

@@ -135,7 +135,7 @@ describe("Note Calendar Tests", () => {
             for (const { event, title } of inputs.map((i) => ({
                 title: i.title,
                 event: {
-                    endDate: null,
+                    endDate: null, /*MARKED */
                     allDay: false,
                     type: "single",
                     ...i.event,
